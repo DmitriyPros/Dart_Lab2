@@ -1,10 +1,14 @@
 import 'package:lab2_todo/todo.dart';
 import 'dart:io';
-String redPen(String text) {
-  return '\x1B[31m$text\x1B[0m';
-}
+import 'package:ansicolor/ansicolor.dart';
+
+final AnsiPen greenPen = AnsiPen()..green();
+final AnsiPen redPen = AnsiPen()..red();
+final AnsiPen bluePen = AnsiPen()..blue();
+final AnsiPen yellowPen = AnsiPen()..yellow();
+
 void addTodo(List<Todo> todos) {
-  stdout.write('Название задачи: ');
+  stdout.write(greenPen('Название задачи: '));
   String? input = stdin.readLineSync();
 
   if (input == null || input.trim().isEmpty) {
@@ -14,12 +18,12 @@ void addTodo(List<Todo> todos) {
 
   //int newId = todos.isEmpty ? 1: todos.last.id + 1;
   todos.add(Todo(title: input.trim()));
-  print('Задача добавлена!');
+  print(bluePen('Задача добавлена!'));
 }
 
 void listTodos(List<Todo> todos) {
   if (todos.isEmpty) {
-    print('Список задач пуст');
+    print(redPen('Список задач пуст'));
     return;
   }
 
@@ -30,47 +34,47 @@ void listTodos(List<Todo> todos) {
 }
 
 void completeTodo(List<Todo> todos) {
-  stdout.write('ID задачи: ');
+  stdout.write(greenPen('ID задачи: '));
   String? input = stdin.readLineSync();
 
   if (input == null) return;
 
   int? id = int.tryParse(input.trim());
   if (id == null) {
-    print('Ошибка: введите число!');
+    print(redPen('Ошибка: введите число!'));
     return;
   }
   for (var todo in todos) {
       if (todo.id == id) {
         todo.complete();
-        print('Задача отмечена выполненной!');
+        print(bluePen('Задача отмечена выполненной!'));
         return;
       }
   }
 
-  print('Задача с ID $id не найдена');
+  print(redPen('Задача с ID $id не найдена'));
 }
 
 void deleteTodo(List<Todo> todos) {
-  stdout.write('ID задачи: ');
+  stdout.write(greenPen('ID задачи: '));
   String? input = stdin.readLineSync();
 
   if (input == null) return;
 
   int? id = int.tryParse(input.trim());
   if (id == null) {
-    print('Ошибка: введите число!');
+    print(redPen('Ошибка: введите число!'));
     return;
   }
 
   for (int i = 0; i < todos.length; i++) {
     if (todos[i].id == id) {
       todos.removeAt(i);
-      print('Задача удалена!');
+      print(bluePen('Задача удалена!'));
       return;
     }
   }
-  print('Задача с ID $id не найдена');
+  print(redPen('Задача с ID $id не найдена'));
 }
 void main() {
   List<Todo> todos = [];
@@ -87,20 +91,20 @@ void main() {
       case 'list': listTodos(todos); break;
       case 'done': completeTodo(todos); break;
       case 'delete': deleteTodo(todos); break;
-      case 'exit': print('До свидания!'); return;
-      default: printMenu(); print('Неизвестная команда');
+      case 'exit': print(bluePen('До свидания!')); return;
+      default: printMenu(); print(redPen('Неизвестная команда'));
     }
   }
 }
 
 void printMenu() {
   print('');
-  print('ToDo список');
-  print('add - добавить задачу');
-  print('list - показать все задачи');
-  print('done - отметить выполненной');
-  print('delete - удалить задачу');
-  print('exit - выйти');
+  print(yellowPen(('ToDo список')));
+  print(greenPen('add - добавить задачу'));
+  print(greenPen('list - показать все задачи'));
+  print(greenPen('done - отметить выполненной'));
+  print(greenPen('delete - удалить задачу'));
+  print(greenPen('exit - выйти'));
 
 
 }
