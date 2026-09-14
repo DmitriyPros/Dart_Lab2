@@ -1,16 +1,19 @@
 import 'package:lab2_todo/todo.dart';
 import 'dart:io';
+String redPen(String text) {
+  return '\x1B[31m$text\x1B[0m';
+}
 void addTodo(List<Todo> todos) {
   stdout.write('Название задачи: ');
   String? input = stdin.readLineSync();
 
   if (input == null || input.trim().isEmpty) {
-    print('Ошибка: название не может быть пустым');
+    print(redPen(('Ошибка: название не может быть пустым')));
     return;
   }
 
-  int newId = todos.isEmpty ? 1: todos.last.id + 1;
-  todos.add(Todo(id: newId, title: input.trim()));
+  //int newId = todos.isEmpty ? 1: todos.last.id + 1;
+  todos.add(Todo(title: input.trim()));
   print('Задача добавлена!');
 }
 
@@ -27,7 +30,7 @@ void listTodos(List<Todo> todos) {
 }
 
 void completeTodo(List<Todo> todos) {
-  stdout.write('ID задачи');
+  stdout.write('ID задачи: ');
   String? input = stdin.readLineSync();
 
   if (input == null) return;
@@ -67,7 +70,7 @@ void deleteTodo(List<Todo> todos) {
       return;
     }
   }
-  print('Задача с ID $id не наёдена');
+  print('Задача с ID $id не найдена');
 }
 void main() {
   List<Todo> todos = [];
